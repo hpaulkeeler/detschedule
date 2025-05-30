@@ -1,8 +1,8 @@
 #  Adaptive determinantal scheduling with fairness in wireless networks
 
-The MATLAB here code was used to generate the numerical results in the paper[1] by Blaszczyszyn and Keeler. The code's purpose is studying determinantal scheduling (described below) when maximizing the coverage probability, which is defined as the tail distribution of the signal-to-interference-plus-noise ratio (SINR), or a function of the coverage probability, which is called fairness.
+The (MATLAB) code here was used to generate the numerical results in the paper[1] by Blaszczyszyn and Keeler. The code's purpose is studying determinantal scheduling (described below) when maximizing the coverage probability, which is defined as the tail distribution of the signal-to-interference-plus-noise ratio (SINR), or a function of the coverage probability, which is called fairness.
 
-This code generates network configurations of n transmitter-receiver pairs, which is known as the bi-pole or bi-polar network model. The code then finds the optimal access/transmitting probability for three separate random scheduling algorithms:
+This code generates network configurations of n transmitter-receiver pairs (x_1,y_1),...,(x_n,y_n), which is known as the bi-pole or bi-polar network model. Using the coverage probability, defined as P(SINR(x_i,y_i)>tau) where tau>0, as the rate, the code then finds the optimal access/transmitting probability for three separate random scheduling algorithms:
 
 1) Fixed Aloha: Each transmitter-receiver pair (x_i,y_i) is independently active (so the transmitter is transmitting) with fixed probability p. The active pairs form a binomial point process.
 

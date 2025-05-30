@@ -4,7 +4,7 @@ The (MATLAB) code here was used to generate the numerical results in the paper[1
 
 The code's purpose is studying determinantal scheduling (described below) when maximizing the coverage probability, which is defined as the tail distribution of the signal-to-interference-plus-noise ratio (SINR), or a function of the coverage probability, which is called fairness.
 
-This code generates network configurations of n transmitter-receiver pairs (x_1,y_1),...,(x_n,y_n), which is known as the bi-pole or bi-polar network model. The transmitters x_1,...,x_n are scattered uniformly. Each receiver y_i are located at random or fixed distance from transmitter x_i. 
+This code generates network configurations of n transmitter-receiver pairs (x_1,y_1),...,(x_n,y_n), which is known as the bi-pole or bi-polar network model. The transmitters x_1,...,x_n are scattered uniformly. Each receiver y_i is located at random or fixed distance from transmitter x_i, whereas the angle of orientation is a uniform random variable.
 
 Using the coverage probability, defined as P(SINR(x_i,y_i)>tau) where tau>0, as the rate, the code then finds the optimal access/transmitting probability for three separate random scheduling algorithms:
 

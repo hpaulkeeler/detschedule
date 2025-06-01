@@ -11,14 +11,14 @@
 %
 % S is the similarity matrix, which creates replusion among the
 % points, can be formed from either, Gaussian, Cauchy or Bessel kernel
-% function. See funS.m for more details.
+% function. See funPairsS.m for more details.
 %
 % theta is is array representing a fitting parameter for the quality model
-% q(theta,f), where f is a vector of features, such as distances of the
-% first and second nearest neighbouring point. The quality model is convex,
-% for example:
+% q(theta,f), where f is a vector of features with the same dimensions as theta, 
+% In this code, features are the distsances of the first and second nearest 
+% neighbouring point. The quality model is convex, for example:
 %
-% q(theta,f)=|theta.*f|^2
+% q(theta,f) = |theta*f'|^2
 %
 % numbFeature is a single number (0,1, or 2) representing the number of
 % features to be used in the quality model q. If numbFeature = 0, then no

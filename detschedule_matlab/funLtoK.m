@@ -39,14 +39,14 @@
 
 
 function K=funLtoK(L)
-%METHOD 1 -- using eigendecomposition.
-%This method doesn't need to calcualte the inverse and seems to be more stable.
-[eigenVectLK,eigenValL]=eig(L); %eigen decomposition
-eigenValL=(diag(eigenValL)); %eigenvalues of L as vector
-eigenValK = eigenValL./(1+eigenValL); %eigenvalues of K
-eigenValK=diag(eigenValK); %%eigenvalues of L as diagonal matrix
-K=eigenVectLK*eigenValK*(eigenVectLK'); %recombine from eigen components
-K=real(K); %make sure all values are real
+% METHOD 1 -- using eigendecomposition.
+% This method doesn't need to calcualte the inverse and seems to be more stable.
+[eigenVectLK,eigenValL]=eig(L); % eigen decomposition
+eigenValL=(diag(eigenValL)); % eigenvalues of L as vector
+eigenValK = eigenValL./(1+eigenValL); % eigenvalues of K
+eigenValK=diag(eigenValK); %% eigenvalues of L as diagonal matrix
+K=eigenVectLK*eigenValK*(eigenVectLK'); % recombine from eigen components
+K=real(K); % make sure all values are real
 
 end
 

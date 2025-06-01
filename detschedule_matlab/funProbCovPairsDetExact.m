@@ -69,7 +69,7 @@
 function [probCov,probTX,probCovCond]=funProbCovPairsDetExact(xxTX,yyTX,...,
     xxRX,yyRX,thresholdSINR,constNoise,muFading,funPathloss,L,indexTransPair)
 
-%reshape into column vectors
+% reshape into column vectors
 xxTX=xxTX(:);
 yyTX=yyTX(:);
 xxRX=xxRX(:);
@@ -82,58 +82,58 @@ fun_h=@(s,r)(1./((funPathloss(s)./funPathloss(r))...
 % a helper function called the 'noise factor'.
 fun_w=@(r)(exp(-(thresholdSINR/muFading)*constNoise./funPathloss(r)));
 
-%%%START Numerical Connection Probability (ie SINR>thresholdConst) START%%%
-K=funLtoK(L); %caclulate K kernel from kernel L
-sizeK=size(K,1); %number of columns/rows in kernel matrix K
+%%% START Numerical Connection Probability (ie SINR>thresholdConst) START%%%
+K=funLtoK(L); % caclulate K kernel from kernel L
+sizeK=size(K,1); % number of columns/rows in kernel matrix K
 
-%calculate all respective distances (based on random network configuration)
-%transmitters to other receivers
+% calculate all respective distances (based on random network configuration)
+% transmitters to other receivers
 dist_ji_xx=bsxfun(@minus,xxTX,xxRX');
 dist_ji_yy=bsxfun(@minus,yyTX,yyRX');
-dist_ji=hypot(dist_ji_xx,dist_ji_yy); %Euclidean distances
-%transmitters to receivers
+dist_ji=hypot(dist_ji_xx,dist_ji_yy); % Euclidean distances
+% transmitters to receivers
 dist_ii_xx=xxTX-xxRX;
 dist_ii_yy=yyTX-yyRX;
-dist_ii=hypot(dist_ii_xx,dist_ii_yy); %Euclidean distances
-dist_ii=repmat(dist_ii',sizeK,1);%repeat cols for element-wise evaluation
+dist_ii=hypot(dist_ii_xx,dist_ii_yy); % Euclidean distances
+dist_ii=repmat(dist_ii',sizeK,1);% repeat cols for element-wise evaluation
 
-%apply functions
-hMatrix=fun_h(dist_ji,dist_ii); %matrix H for all h_{x_i}(x_j) values
-W_x=fun_w(hypot(xxTX-xxRX,yyTX- yyRX)); %noise factor
+% apply functions
+hMatrix=fun_h(dist_ji,dist_ii); % matrix H for all h_{x_i}(x_j) values
+W_x=fun_w(hypot(xxTX-xxRX,yyTX- yyRX)); % noise factor
 
 if ~exist('indexTransPair','var')
-    indexTransPair=(1:sizeK)'; %set index for all pairs
+    indexTransPair=(1:sizeK)'; % set index for all pairs
 else
-    indexTransPair=indexTransPair(:); %used supplied index
+    indexTransPair=indexTransPair(:); % used supplied index
 end
 
-%transmitting-receiving probabilities are the diagonals of kernel
+% transmitting-receiving probabilities are the diagonals of kernel
 probTX=K(sub2ind([sizeK,sizeK],indexTransPair,indexTransPair));
-probCovCond=zeros(length(indexTransPair),1);%initiate vector for coverage probability
+probCovCond=zeros(length(indexTransPair),1);% coverage probability
 
-%loop through for all pairs
+% loop through for all pairs
 for pp=1:length(indexTransPair)
-    indexTransTemp=indexTransPair(pp); %index of current pair
+    indexTransTemp=indexTransPair(pp); % index of current pair
 
-    %create h matrix corresponding to transmitter-receiver pair
-    booleReduced=true(sizeK,1); %Boolean vector for all pairs
-    booleReduced(indexTransTemp)=false;%remove transmitter
-    %choose transmitter-receiver row
+    % create h matrix corresponding to transmitter-receiver pair
+    booleReduced=true(sizeK,1); % Boolean vector for all pairs
+    booleReduced(indexTransTemp)=false;% remove transmitter
+    % choose transmitter-receiver row
     hVectorReduced=hMatrix(booleReduced,indexTransTemp);
-    %repeat vector hVectorReduced as columns
+    % repeat vector hVectorReduced as columns
     hMatrixReduced=repmat(hVectorReduced,1,sizeK-1);
 
-    %create reduced Palm kernels
-    KPalmReduced=funPalmK(K,indexTransTemp); %reduced Palm version of K matrix
-    %calculate final kernel
+    % create reduced Palm kernels
+    KPalmReduced=funPalmK(K,indexTransTemp); % reduced Palm version of K matrix
+    % calculate final kernel
     KReduced_h=sqrt(1-hMatrixReduced').*KPalmReduced.*sqrt(1-hMatrixReduced);
 
-    %calculate unconditional probabiliity for the event that transmitter's
-    %signal at the receiver has an SINR>tau, given the pair is active (ie
-    %transmitting and receiving)
+    % calculate unconditional probability for the event that transmitter's
+    % signal at the receiver has an SINR>tau, given the pair is active (ie
+    % transmitting and receiving)
     probCovCond(pp)=det(eye(sizeK-1)-KReduced_h)*W_x(indexTransTemp);
 end
-%calculate unconditional probability
+% calculate unconditional probability
 probCov=probCovCond.*probTX;
-%%%END Numerical Connection Probability END%%%
+%%% END Numerical Connection Probability END%%%
 end

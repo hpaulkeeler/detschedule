@@ -1,4 +1,4 @@
-% S=funPairsS(xx,yy,choiceKernel,paramKernel)
+% S=funS(xx,yy,choiceKernel,paramKernel)
 %
 % This code generates a similaririty $ matrix based on Cartesian
 % coordinates xx and yy.
@@ -33,7 +33,7 @@
 %
 % Author: H. Paul Keeler, 2025.
 
-function S=funPairsS(xx,yy,choiceKernel,paramKernel)
+function S=funS(xx,yy,choiceKernel,paramKernel)
 %xx/yy need to be column vectors
 xx=xx(:);
 yy=yy(:);

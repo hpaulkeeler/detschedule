@@ -61,47 +61,47 @@ function [fairMean, fairMeanAll,probCovAll,probAccAll]=...
     funFairMeanDet(ppStructConfig,indexConfig,...
     thresholdSINR,constNoise,muFading,funPathloss,funFair,S,theta,numbFeature)
 
-numbConfig=numel(indexConfig); %number of network configurations
-numbPairsAll=[ppStructConfig(indexConfig).n]';%number of pairs in each configuration
-numbPairsTotal=sum(numbPairsAll);%total number of pairs
+numbConfig=numel(indexConfig); % number of network configurations
+numbPairsAll=[ppStructConfig(indexConfig).n]';% number of pairs in each configuration
+numbPairsTotal=sum(numbPairsAll);% total number of pairs
 
-%initialize  variable for average fairness in each training set
+% initialize  variable for average fairness in each training set
 fairMeanAll=zeros(numbConfig,1);
-%initialize  cell array for coverage probability
+% initialize  cell array for coverage probability
 probCovAll=mat2cell(zeros(numbPairsTotal,1),numbPairsAll);
-%initialize  cell array for access probability
+% initialize  cell array for access probability
 probAccAll=mat2cell(zeros(numbPairsTotal,1),numbPairsAll);
 
-%loop through for every training/learning sample
+% loop through for every training/learning sample
 for tt=1:numbConfig
     indexConfigTemp=indexConfig(tt);
-    %retrieve x/y coordinates of all transmitter-receiver pairs
+    % retrieve x/y coordinates of all transmitter-receiver pairs
     xxTX=ppStructConfig(indexConfigTemp).xxTX; 
 yyTX=ppStructConfig(indexConfigTemp).yyTX;
 xxRX=ppStructConfig(indexConfigTemp).xxRX;
 yyRX=ppStructConfig(indexConfigTemp).yyRX;
 
-    % %create L matrix
+    % % create L matrix
     L=funPairsL(xxTX,yyTX,xxRX,yyRX,...
         S,theta,numbFeature);
 
-    %calculate coverage probabilities for all transmitter-receiver pairs
+    % calculate coverage probabilities for all transmitter-receiver pairs
     [probCovTemp,probAccTemp]=funProbCovPairsDetExact(xxTX,yyTX,xxRX,yyRX,...
         thresholdSINR,constNoise,muFading,funPathloss,L);
-    probCovAll{tt}=probCovTemp; %coverage probability
-    probAccAll{tt}=probAccTemp; %access probability
+    probCovAll{tt}=probCovTemp; % coverage probability
+    probAccAll{tt}=probAccTemp; % access probability
 
-    rateTXRX=probCovTemp; %use coverage probability as rate
+    rateTXRX=probCovTemp; % use coverage probability as rate
 
-    %weight for "good" subsets; see funU definition
-    weightConfig=1;%funU(xxTX,yyTX,xxRX,yyRX);
-    %calculate mean of fairness of rates
+    % weight for "good" subsets; see funU definition
+    weightConfig=1;% funU(xxTX,yyTX,xxRX,yyRX);
+    % calculate mean of fairness of rates
     fairMeanAll(tt)=mean(funFair(rateTXRX)*weightConfig);
 end
 
-fairMean=mean(fairMeanAll); %average fairness across all training sets
+fairMean=mean(fairMeanAll); % average fairness across all training sets
 
-%check average fairness
+% check average fairness
 if isinf(fairMean)
     warning(['The fairness is infinite, possibly due to exponentially '...
         'small coverage probabilities. Adjust network and SINR paramters.']);

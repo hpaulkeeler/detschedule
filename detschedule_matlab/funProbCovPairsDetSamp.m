@@ -66,86 +66,86 @@
 function [probCovEmp,probTXEmp,probCovCondEmp]=funProbCovPairsDetSamp(xxTX,yyTX,xxRX,yyRX,...
     thresholdSINR,constNoise,muFading,funPathloss,L,numbSamp,indexTransPair)
 
-%Eigen decomposition of L
+% Eigen decomposition of L
 [eigenVecL,eigenValL]=eig(L);
 
 
-%reshape into column vectors
+% reshape into column vectors
 xxTX=xxTX(:);
 yyTX=yyTX(:);
 xxRX=xxRX(:);
 yyRX=yyRX(:);
 
-sizeL=size(L,1); %number of columns/rows in kernel matrix L
+sizeL=size(L,1); % number of columns/rows in kernel matrix L
 numbPairs=sizeL;
 
 if ~exist('indexTransPair','var')
-    indexTransPair=(1:sizeL)'; %set index for all pairs
+    indexTransPair=(1:sizeL)'; % set index for all pairs
 else
-    indexTransPair=indexTransPair(:); %used supplied index
+    indexTransPair=indexTransPair(:); % used supplied index
 end
 
-%initiate vectors for probability
+% initiate vectors for probability
 probTXEmp=zeros(length(indexTransPair),1);
 probCovCondEmp=zeros(length(indexTransPair),1);
 probCovEmp=zeros(length(indexTransPair),1);
 
-%loop through the network pairs
+% loop through the network pairs
 for pp=1:length(indexTransPair)
-    indexTransTemp=indexTransPair(pp); %index of current pair
+    indexTransTemp=indexTransPair(pp); % index of current pair
 
-    %transmitter location
+    % transmitter location
     xxTX0=xxTX(indexTransTemp);
     yyTX0=yyTX(indexTransTemp);
 
-    %receiver location
+    % receiver location
     xxRX0=xxRX(indexTransTemp);
     yyRX0=yyRX(indexTransTemp);
 
-    %%%START Empirical Connection Proability (ie SINR>thresholdConst) START%%%
-    %initialize  boolean vectors/arrays for collecting statistics
-    booleTX=false(numbSamp,1); %transmitter-receiver pair exists
-    booleCov=false(numbSamp,1); %transmitter-receiver pair is connected
-    %loop through all simulations
+    %%% START Empirical Connection Proability (ie SINR>thresholdConst) START%%%
+    % initialize  boolean vectors/arrays for collecting statistics
+    booleTX=false(numbSamp,1); % transmitter-receiver pair exists
+    booleCov=false(numbSamp,1); % transmitter-receiver pair is connected
+    % loop through all simulations
     for ss=1:numbSamp
         indexDPP=funSimSimpleDPP(eigenVecL,eigenValL);
-        %if transmitter-receiver pair exists in the determinantal outcome
+        % if transmitter-receiver pair exists in the determinantal outcome
         booleTX(ss)=any(indexDPP==indexTransTemp);
 
         if booleTX(ss)
-            %create Boolean variable for active interferers
+            % create Boolean variable for active interferers
             booleTransmit=false(numbPairs,1);
             booleTransmit(indexDPP)=true;
             booleTransmit(indexTransTemp)=false;
 
-            %x/y values of interfering nodes
+            % x/y values of interfering nodes
             xxInter=xxTX(booleTransmit);
             yyInter=yyTX(booleTransmit);
 
-            %number of interferers
+            % number of interferers
             numbInter=sum(booleTransmit);
 
-            %simulate signal for interferers
-            fadeRandInter=exprnd(muFading,numbInter,1); %fading
-            distPathInter=hypot(xxInter-xxRX0,yyInter-yyRX0); %path distance
-            proplossInter=fadeRandInter.*funPathloss(distPathInter); %pathloss
+            % simulate signal for interferers
+            fadeRandInter=exprnd(muFading,numbInter,1); % fading
+            distPathInter=hypot(xxInter-xxRX0,yyInter-yyRX0); % path distance
+            proplossInter=fadeRandInter.*funPathloss(distPathInter); % pathloss
 
-            %simulate signal for transmitter
-            fadeRandSig=exprnd(muFading); %fading
-            distPathSig=hypot(xxTX0-xxRX0,yyTX0-yyRX0); %path distance
-            proplossSig=fadeRandSig.*funPathloss(distPathSig); %pathloss
+            % simulate signal for transmitter
+            fadeRandSig=exprnd(muFading); % fading
+            distPathSig=hypot(xxTX0-xxRX0,yyTX0-yyRX0); % path distance
+            proplossSig=fadeRandSig.*funPathloss(distPathSig); % pathloss
 
-            %Calculate SINR
+            % Calculate SINR
             SINR=proplossSig/(sum(proplossInter)+constNoise);
 
-            %see if transmitter is connected
+            % see if transmitter is connected
             booleCov(ss)=SINR>thresholdSINR;
         end
     end
-    %Estimate empirical probabilities
-    probCovCondEmp(pp)=mean(booleCov(booleTX));%SINR>thresholdConst given pair
-    probTXEmp(pp)=mean(booleTX); %transmitter-receiver pair exists
-    probCovEmp(pp)=mean(booleCov); %SINR>thresholdConst
-    %%%END Empirical Connection Proability (ie SINR>thresholdConst) END%%%
+    % Estimate empirical probabilities
+    probCovCondEmp(pp)=mean(booleCov(booleTX));% SINR>thresholdConst given pair
+    probTXEmp(pp)=mean(booleTX); % transmitter-receiver pair exists
+    probCovEmp(pp)=mean(booleCov); % SINR>thresholdConst
+    %%% END Empirical Connection Proability (ie SINR>thresholdConst) END%%%
 
 end

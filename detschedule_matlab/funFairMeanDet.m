@@ -62,7 +62,8 @@ function [fairMean, fairMeanAll,probCovAll,probAccAll]=...
     thresholdSINR,constNoise,muFading,funPathloss,funFair,S,theta,numbFeature)
 
 numbConfig=numel(indexConfig); % number of network configurations
-numbPairsAll=[ppStructConfig(indexConfig).n]';% number of pairs in each configuration
+% number of pairs in each configuration
+numbPairsAll=[ppStructConfig(indexConfig).n]';
 numbPairsTotal=sum(numbPairsAll);% total number of pairs
 
 % initialize  variable for average fairness in each training set
@@ -76,10 +77,10 @@ probAccAll=mat2cell(zeros(numbPairsTotal,1),numbPairsAll);
 for tt=1:numbConfig
     indexConfigTemp=indexConfig(tt);
     % retrieve x/y coordinates of all transmitter-receiver pairs
-    xxTX=ppStructConfig(indexConfigTemp).xxTX; 
-yyTX=ppStructConfig(indexConfigTemp).yyTX;
-xxRX=ppStructConfig(indexConfigTemp).xxRX;
-yyRX=ppStructConfig(indexConfigTemp).yyRX;
+    xxTX=ppStructConfig(indexConfigTemp).xxTX;
+    yyTX=ppStructConfig(indexConfigTemp).yyTX;
+    xxRX=ppStructConfig(indexConfigTemp).xxRX;
+    yyRX=ppStructConfig(indexConfigTemp).yyRX;
 
     % % create L matrix
     L=funPairsL(xxTX,yyTX,xxRX,yyRX,...
@@ -94,7 +95,7 @@ yyRX=ppStructConfig(indexConfigTemp).yyRX;
     rateTXRX=probCovTemp; % use coverage probability as rate
 
     % weight for "good" subsets; see funU definition
-    weightConfig=1;% funU(xxTX,yyTX,xxRX,yyRX);
+    weightConfig=1;
     % calculate mean of fairness of rates
     fairMeanAll(tt)=mean(funFair(rateTXRX)*weightConfig);
 end

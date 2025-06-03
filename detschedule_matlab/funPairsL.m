@@ -28,7 +28,7 @@
 % fun_q(tf) is a single-variable (optional) function for the quality model,
 % where tf = theta.*f or tf = theta.
 %
-% OUPUTS:
+% OUTPUTS:
 %
 % L is an L-ensemble kernel matrix L.
 %

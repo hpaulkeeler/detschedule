@@ -1,6 +1,6 @@
 % S=funS(xx,yy,choiceKernel,paramKernel)
 %
-% This code generates a similaririty $ matrix based on Cartesian
+% This code generates a similarity $ matrix based on Cartesian
 % coordinates xx and yy.
 %
 % INPUTS:
@@ -13,7 +13,7 @@
 % paramKernel = 0, then the identity mtraix is returned for the similiarity
 % matrix S.
 %
-% OUPUTS:
+% OUTPUTS:
 %
 % S is the similarity matrix.
 %

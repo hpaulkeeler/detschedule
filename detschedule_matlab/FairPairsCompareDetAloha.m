@@ -1,7 +1,7 @@
 % The (MATLAB) code here was used to generate the numerical results in the
 % paper[1] by Blaszczyszyn and Keeler.
 % 
-% The code's purpose is studying determinantal scheduling(described below)
+% The code's purpose is studying determinantal scheduling (described below)
 % when maximizing the coverage probability, which is defined as the tail
 % distribution of the signal-to-interference-plus-noise ratio (SINR), or
 % a function of the coverage probability, which is called fairness.
@@ -67,22 +67,23 @@ rng(1);
 
 %%% START -- Parameters -- START %%%
 numbSim=10; % number of simulations
-numbPairs=5; % number of transimitter-receiver pairs
-booleFair=0; % 0 for no fairness, 1 for fairness with utility function
-numbPlot=2; % 1 just plot coverage probabilities, 2 plot also fairness values
+numbPairs=5; % number of transmitter-receiver pairs
+booleFair=1; % 0 for no fairness, 1 for fairness with utility function
+numbPlot=1; % 1 just plot coverage probabilities, 2 plot also fairness values
 boolePlotAverage=1; % plot ensemble averages
 
 % 1 for a random global network model;
 % 2/3 for local with fixed/random transmitter-receiver distance
-choiceNetwork=2; % choose a network model
+choiceNetwork=1; % choose a network model
 rMax=.2; % max transmitter-receiver distance 
 
 % fading model
 muFading=1; % Rayleigh fading average
 % path loss model
-betaPath=4; % pathloss exponent
-kappaPath=1; % rescaling constant for pathloss function
+betaPath=4; % path loss exponent
+kappaPath=1; % rescaling constant for path loss function
 
+% SINR model
 thresholdSINR=1; % SINR threshold value
 constNoise=0; % noise constant
 
@@ -95,7 +96,7 @@ paramKernel=[sigma,alpha];
 
 numbFeature=0; % ranging from 0 to n (if numbFeature>0 requires n-1 points)
 % set numbFeature=0 to optimize the quality feature q_i for each
-% transmiiter location x_i
+% transmitter location x_i
 
 optionsOpt=optimset('Display','off'); % options for fminsearch
 
@@ -113,8 +114,7 @@ xx0=mean([xMin,xMax]);
 yy0=mean([yMin,yMax]);
 
 numbModelComp=3; % number of models to compare
-%  determintal , adaptive Aloha, fixed Aloha
-
+% determinantal, adaptive Aloha, fixed Aloha
 %%% END -- Parameters -- END %%%
 
 % helper functions
@@ -133,8 +133,7 @@ else
 end
 labelTitle=labelTitle + ". SINR threshold = " + string(thresholdSINR);
 
-
-% initiate arrays for collecting statistisics
+% initiate arrays for collecting statistics
 % coverage probabilities
 probCovAllDet=zeros(numbSim,numbPairs);
 probCovAllAlohaA=zeros(numbSim,numbPairs);
@@ -154,7 +153,7 @@ fairMeanFittedAllAlohaF=zeros(numbSim,1);
 % optimal theta values
 thetaMaxAll=zeros(numbSim,numbPairs,numbModelComp);
 
-%%% START - simulate networks and optmize scheduler START %%%
+%%% START - simulate networks and optimize scheduler START %%%
 for indexSim=1:numbSim
     % loop through different network layouts
 
@@ -199,7 +198,7 @@ for indexSim=1:numbSim
             thetaGuess=ones(numbPairs,1);
             paramKernel_m=paramKernel;
         end
-        % Aloha model is equivalent to sigma = 0 in Guassian matrix S
+        % Aloha model is equivalent to sigma = 0, so similarity matrix S = I
         if  indexModel==2
             % Adaptive Aloha
             thetaGuess=ones(numbPairs,1);
@@ -226,10 +225,6 @@ for indexSim=1:numbSim
         [thetaMax_s_m, fairMeanNeg_s_m]=...
             fminunc(funMin,thetaGuess,optionsOpt);
         numb_theta=length(thetaMax_s_m);
-        % if theta is just a scalar, thetaMaxAll is padded with zeros
-        % store the optimization values
-        % thetaMaxAll(indexSim,1:numb_theta,indexModel)=thetaMax_s_m;
-        % fairMeanFittedAll(indexSim,1:numb_theta,indexModel)=-fairMeanNeg_s_m;
         %%% END Optimization END%%%
 
         % calculate kernel matrix L
@@ -242,7 +237,7 @@ for indexSim=1:numbSim
 
         % collect statistics
         if indexModel==1
-            % determintanl model
+            % determinantal model
             probCovAllDet(indexSim,:)=probCov_s_m;
             probTX_AllDet(indexSim,:)=probTX_s_m;
             probCovCondAllDet(indexSim,:)=probCovCond_s_m;
@@ -251,7 +246,6 @@ for indexSim=1:numbSim
             S_Det=S_m;
             L_Det=L_m;
             qDet=qVector_m;
-            % fairMeanDet=-fairMeanNeg_s_m;
             thetaMaxDet=thetaMax_s_m;
 
         end
@@ -266,7 +260,6 @@ for indexSim=1:numbSim
             S_AlohaA=S_m;
             L_AlohaA=L_m;
             qAlohaA=qVector_m;
-            % fairMeanAlohaA=-fairMeanNeg_s_m;
             thetaMaxAlohaA=thetaMax_s_m;
         end
         if indexModel==3
@@ -279,20 +272,19 @@ for indexSim=1:numbSim
             S_AlohaF=S_m;
             L_AlohaF=L_m;
             qAlohaF=qVector_m;
-            % fairMeanAlohaF=-fairMeanNeg_s_m;
             thetaMaxAlohaF=thetaMax_s_m;
         end
     end
 
 end
-%%% END simulate networks and optmize scheduler END %%%
+%%% END simulate networks and optimize scheduler END %%%
 
 %%% START calculate ensemble statistics START %%%
 % coverage probabilities averaged over ensemble (ie all network configurations)
 probCovMeanDet=mean(probCovAllDet,"all");
 probCovMeanAlohaA=mean(probCovAllAlohaA,"all");
 probCovMeanAlohaF=mean(probCovAllAlohaF,"all");
-% acess probabilities averaged over ensemble
+% access probabilities averaged over ensemble
 probTXMeanDet=mean(probTX_AllDet,"all");
 probTXMeanAlohaA=mean(probTX_AllAlohaA,"all");
 probTXMeanAlohaF=mean(probTX_AllAlohaF,"all");
@@ -304,7 +296,7 @@ fairAllAlohaF=(funFair(probCovAllAlohaF));
 fairMeanDet=mean(fairAllDet,"all");
 fairMeanAlohaA=mean(fairAllAlohaA,"all");
 fairMeanAlohaF=mean(fairAllAlohaF,"all");
-%%% EBD calculate ensemble statistics END%%%
+%%% END calculate ensemble statistics END%%%
 
 indexPlotExample=numbSim; % choose an index for a plotting example
 % retrieve data for plotting
@@ -351,7 +343,7 @@ for indexPlot=1:numbPlot
         dataPlotMeanAlohaF=fairMeanAlohaF;
     end
 
-    % plot resuls
+    % plot results
     plot(indexPairs,dataPlotDet,'bx');
     plot(indexPairs,dataPlotAlohaA,'m+');
     plot(indexPairs,dataPlotAlohaF,'k*');

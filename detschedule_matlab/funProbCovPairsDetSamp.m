@@ -102,7 +102,7 @@ for pp=1:length(indexTransPair)
     xxRX0=xxRX(indexTransTemp);
     yyRX0=yyRX(indexTransTemp);
 
-    %%% START Empirical Connection Proability (ie SINR>thresholdConst) START%%%
+    %%% START Empirical Connection Probability (ie SINR>thresholdConst) START%%%
     % initialize  boolean vectors/arrays for collecting statistics
     booleTX=false(numbSamp,1); % transmitter-receiver pair exists
     booleCov=false(numbSamp,1); % transmitter-receiver pair is connected
@@ -128,12 +128,12 @@ for pp=1:length(indexTransPair)
             % simulate signal for interferers
             fadeRandInter=exprnd(muFading,numbInter,1); % fading
             distPathInter=hypot(xxInter-xxRX0,yyInter-yyRX0); % path distance
-            proplossInter=fadeRandInter.*funPathloss(distPathInter); % pathloss
+            proplossInter=fadeRandInter.*funPathloss(distPathInter); % path loss
 
             % simulate signal for transmitter
             fadeRandSig=exprnd(muFading); % fading
             distPathSig=hypot(xxTX0-xxRX0,yyTX0-yyRX0); % path distance
-            proplossSig=fadeRandSig.*funPathloss(distPathSig); % pathloss
+            proplossSig=fadeRandSig.*funPathloss(distPathSig); % path loss
 
             % Calculate SINR
             SINR=proplossSig/(sum(proplossInter)+constNoise);
@@ -146,6 +146,6 @@ for pp=1:length(indexTransPair)
     probCovCondEmp(pp)=mean(booleCov(booleTX));% SINR>thresholdConst given pair
     probTXEmp(pp)=mean(booleTX); % transmitter-receiver pair exists
     probCovEmp(pp)=mean(booleCov); % SINR>thresholdConst
-    %%% END Empirical Connection Proability (ie SINR>thresholdConst) END%%%
+    %%% END Empirical Connection Probability (ie SINR>thresholdConst) END%%%
 
 end

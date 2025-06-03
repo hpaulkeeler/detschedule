@@ -1,17 +1,21 @@
 % S=funS(xx,yy,choiceKernel,paramKernel)
 %
-% This code generates a similarity S matrix based on Cartesian
+% This code generates a similarity matrix S based on Cartesian
 % coordinates xx and yy.
 %
 % INPUTS:
+%
 % xx and yy are arrays for the Cartesian coordinates of the points.
 %
 % choiceKernel is a number between 1 and 3 for choosing which radial
-% function for kernel matrix. 1 is Gaussian, 2 is Cauchy, 3 is Bessel.
+% function for the similarity matrix. 1 is Gaussian, 2 is Cauchy, and 
+% 3 is Bessel.
 %
-% paramKernel is an array of parameters for the radial functions. If
-% paramKernel = 0, then the identity mtraix is returned for the similiarity
-% matrix S.
+% paramKernel is an array of parameters for the radial functions. For the 
+% aforementioned three radial functions, the first value is the scale 
+% parameter sigma, while the second value is is a second paramter for the 
+% Cauchy function. If the paramKernel = 0, then the identity matrix is returned 
+% for the similarity matrix S.
 %
 % OUTPUTS:
 %
@@ -21,7 +25,11 @@
 % Blaszczyszyn and Keeler, which studies determinantal scheduling in wireless
 % networks.
 %
-% If you use this code in published research, please cite paper[1].
+% If you use this code in published research, please cite the paper[1] by 
+% Blaszczyszyn and Keeler.
+% 
+% More details are given in paper[1] and paper[2]. Also see the book[3] by Taskar 
+% and Kulesza.
 %
 % References:
 %
@@ -30,6 +38,8 @@
 %
 % [2] Blaszczyszyn, Brochard and Keeler, "Coverage probability in
 % wireless networks with determinantal scheduling", 2020.
+% 
+% [3] Taskar and Kulesza, "Determinantal point processes for machine learning", 2012.
 %
 % Author: H. Paul Keeler, 2025.
 
@@ -82,6 +92,7 @@ if sigma~=0
         S(1:1+size(S,1):end)=1; % set to correct value
     end
 else
+    % use identity matrix, which is the Aloha model
     S=eye(sizeS);
 end
 %%% END - Create similarity matrix S - END%%%

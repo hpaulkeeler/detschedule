@@ -14,7 +14,7 @@
 %        'xxRX',xxRX,'yyRX',yyRX,...
 %        'n', numbPairs,'window',[xMin,xMax,yMin,yMax]);
 % Here the arrays xxTX,yyTX,xxRX, and yyRX are the Cartesian coordinates
-% of the transmitter-reiceiver n pairs, which are located in a square  with
+% of the transmitter-receiver n pairs, which are located in a square  with
 % dimensions [xMin,xMax,yMin,yMax].
 %
 % indexConfig is index of the networks configurations being studied.

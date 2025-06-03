@@ -37,26 +37,32 @@
 % the throughput).
 % 
 % The logarithmic fairness function results in proportional fairness, as
-% studied in the paper[3] by Kelly, Maulloo and Tan, but other fairness
+% studied in the paper[4] by Kelly, Maulloo and Tan, but other fairness
 % functions can be used.
 % 
 % This code was originally written by H.P. Keeler for the paper[1] by
 % Blaszczyszyn and Keeler, which studies determinantal scheduling with
 % proportional fairness in wireless networks.
 % 
-% If you use this code in published research, please cite paper[1].
+% If you use this code in published research, please cite the paper[1] by 
+% Blaszczyszyn and Keeler.
 % 
+% More details are given in paper[1] and paper[2]. Also see the book[3] by Taskar 
+% and Kulesza.
+%
 % References:
-% 
+%
 % [1] Blaszczyszyn and Keeler, "Adaptive determinantal scheduling with
 % fairness in wireless networks", 2025.
+%
+% [2] Blaszczyszyn, Brochard and Keeler, "Coverage probability in
+% wireless networks with determinantal scheduling", 2020.
 % 
-% [2] Blaszczyszyn, Brochard and Keeler, "Coverage probability in wireless
-% networks with determinantal scheduling", 2020.
-% 
-% [3] Kelly, Maulloo, and Tan, "Rate control for communication networks:
+% [3] Taskar and Kulesza, "Determinantal point processes for machine learning", 2012.
+%
+% [4] Kelly, Maulloo, and Tan, "Rate control for communication networks:
 % shadow prices, proportional fairness and stability", 1998.
-% 
+%
 % Author: H. Paul Keeler, 2025.
 
 close all;

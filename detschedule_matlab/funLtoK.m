@@ -35,8 +35,6 @@
 % wireless networks with determinantal scheduling", 2020.
 %
 % Author: H. Paul Keeler, 2025.
-%
-
 
 function K=funLtoK(L)
 % METHOD 1 -- using eigendecomposition.

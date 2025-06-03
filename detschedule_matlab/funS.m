@@ -1,6 +1,6 @@
 % S=funS(xx,yy,choiceKernel,paramKernel)
 %
-% This code generates a similarity $ matrix based on Cartesian
+% This code generates a similarity S matrix based on Cartesian
 % coordinates xx and yy.
 %
 % INPUTS:
@@ -49,14 +49,15 @@ distBetweenMean=mean(distBetween);% average inter-point distance
 sigma=sigma*distBetweenMean; % rescale sigma
 
 %%% NOTE:
-% As sigma approaches zero, S approches the identity matrix
-% As sigma approaches infinity, S approches a matrix of ones, which has a
+% As sigma approaches zero, S approaches the identity matrix
+% As sigma approaches infinity, S approaches a matrix of ones, which has a
 % zero determinant (meaning its ill-conditioned in terms of inverses)
 
 %%% START - Create similarity matrix S - START%%%
 if sigma~=0
     % all squared distances of x/y difference pairs
-    xxDiff=bsxfun(@minus,xx,xx'); yyDiff=bsxfun(@minus,yy,yy');
+    xxDiff=bsxfun(@minus,xx,xx'); 
+    yyDiff=bsxfun(@minus,yy,yy');
     rrDiffSquared=(xxDiff.^2+yyDiff.^2);
 
     if choiceKernel==1

@@ -11,7 +11,7 @@
 %
 % S is the similarity matrix, which creates replusion among the
 % points, can be formed from either, Gaussian, Cauchy or Bessel kernel
-% function. See funS.m for more details.
+% function. See the function funS in the file funS.m for more details.
 %
 % theta is is array representing a fitting parameter for the quality model
 % q(theta,f), where f is a vector of features with the same dimensions as theta, 
@@ -25,14 +25,14 @@
 % features are used in the quality model, and the quality model becomes
 % q=fun_q(theta).
 %
-% fun_q(tf) is a single-variable (optional) function for the quality model,
-% where tf = theta.*f or tf = theta.
+% fun_q(t) is a single-variable (optional) function for the quality model,
+% where t = theta.*f or t = theta.
 %
 % OUTPUTS:
 %
 % L is an L-ensemble kernel matrix L.
 %
-% q is an array representing the vector quality model
+% q is an array representing the vector quality model.
 %
 % This code was originally written by H.P. Keeler for the paper[1] by
 % Blaszczyszyn and Keeler, which studies determinantal scheduling in wireless
@@ -69,8 +69,8 @@ else
     fun_quality=@(tF)(abs(tF).^p);
 
     % NOTE: Possible to use q=exp(theta), but it seems to be numerically
-    % unstable, as it creates large numbers and is hard to fit with optimization
-    % functions such as fminunc
+    % unstable, as it creates large numbers and is hard to fit with standard 
+    % optimization functions.
 end
 
 if numbFeature==0
@@ -86,7 +86,7 @@ if (numbFeature>1)&&(numbFeature>numel(xxTX))
     error('Need more points for theta vector of given length.')
 end
 
-% Convert any matrices into vectors and rescale
+% convert any matrices into vectors and rescale
 theta=theta(:); % theta needs to be columm vector
 
 % x/y coordinates need to be column vectors
@@ -97,9 +97,9 @@ yyRX=yyRX(:);
 
 sizeL=length(xxTX); % width/height of L (ie cardinality of state space)
 
-%%% START - Create q (ie quality feature/covariate) vector START%%%
+%%% START - Create q (ie quality feature/covariate) vector START %%%
 % variable thetaFeature stores theta*f, where theta is the fitting
-% (sclaar or vector) parameter and f is a feature vector.
+% (scalar or vector) parameter and f is a feature vector.
 
 if numbFeature==0
     % no features means just the theta parameter
@@ -133,7 +133,7 @@ else
             thetaVector_n=repmat(theta(2:end),1,sizeL);
             % element-wise product of parameters and features
             thetaFeature_n=(thetaVector_n').*feature_n;
-            % sum for each transmitter (ie giving dot product)
+            % sum for each point (ie giving dot product)
             thetaFeature=thetaFeature+sum(thetaFeature_n,2);
         end
 
@@ -142,7 +142,7 @@ end
 
 % apply quality model; see fun quality
 q=fun_quality(thetaFeature);
-%%% END - Create q (ie quality feature/covariage) vector END%%%
+%%% END - Create q (ie quality feature/covariate) vector END%%%
 
 % START Create L matrix
 qMatrix=repmat(q',size(S,1),1); % q diagonal matrix

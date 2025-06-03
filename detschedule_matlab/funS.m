@@ -66,7 +66,6 @@ if sigma~=0
     elseif choiceKernel==2
         %% Cauchy kernel
         % See the paper by Lavancier, Moller and Rubak (2015)
-        % alpha=1; % an additional parameter for the Cauchy (ie second) kernel
         S=1./(1+rrDiffSquared/sigma^2).^(alpha+1/2);
     elseif choiceKernel==3
         %% Bessel kernel

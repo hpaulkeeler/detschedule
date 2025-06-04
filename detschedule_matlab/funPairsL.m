@@ -1,7 +1,7 @@
 % [L,q]=funPairsL(xxTX,yyTX,xxRX,yyRX,S,theta,numbFeature, fun_q)
 %
 % This function creates an L-ensemble kernel matrix L and a quality vector
-% q as detailed in the paper[1] by Blaszczyszyn, Brochard and Keeler.
+% q as detailed in the paper[1] by Blaszczyszyn and Keeler.
 %
 % INPUTS:
 %

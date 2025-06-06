@@ -8,9 +8,9 @@
 % INPUTS:
 %
 % ppStructConfig is a structured array, where each element defines a network
-% configuration or point pattern. For example, a single-element is created
+% configuration or point pattern. For example, a single - element is created
 % with the command:
-% ppStructConfig=struct('xxTX',xxTX,'yyTX',yyTX,...
+% ppStructConfig = struct('xxTX',xxTX,'yyTX',yyTX,...
 %        'xxRX',xxRX,'yyRX',yyRX,...
 %        'n', numbPairs,'window',[xMin,xMax,yMin,yMax]);
 % Here the arrays xxTX,yyTX,xxRX, and yyRX are the Cartesian coordinates
@@ -25,10 +25,10 @@
 %
 % muFading is the mean of the iid random exponential fading variables.
 %
-% funPathloss is a single-variable function for the path-loss model
-% eg funPathloss=@(r)(((1+r)).^(-3.5));
+% funPathloss is a single - variable function for the path - loss model
+% eg funPathloss=@(r)(((1 + r)).^(-3.5));
 %
-% funFair is a single-variable function for the fairness model
+% funFair is a single - variable function for the fairness model
 % eg funFair=@(R)(log(R));
 %
 % OUTPUTS:
@@ -61,29 +61,29 @@ function [fairMean, fairMeanAll,probCovAll,probAccAll]=...
     funFairMeanDet(ppStructConfig,indexConfig,...
     thresholdSINR,constNoise,muFading,funPathloss,funFair,S,theta,numbFeature)
 
-numbConfig=numel(indexConfig); % number of network configurations
+numbConfig = numel(indexConfig); % number of network configurations
 % number of pairs in each configuration
-numbPairsAll=[ppStructConfig(indexConfig).n]';
-numbPairsTotal=sum(numbPairsAll);% total number of pairs
+numbPairsAll = [ppStructConfig(indexConfig).n]';
+numbPairsTotal = sum(numbPairsAll);% total number of pairs
 
 % initialize  variable for average fairness in each training set
-fairMeanAll=zeros(numbConfig,1);
+fairMeanAll = zeros(numbConfig,1);
 % initialize  cell array for coverage probability
-probCovAll=mat2cell(zeros(numbPairsTotal,1),numbPairsAll);
+probCovAll = mat2cell(zeros(numbPairsTotal,1),numbPairsAll);
 % initialize  cell array for access probability
-probAccAll=mat2cell(zeros(numbPairsTotal,1),numbPairsAll);
+probAccAll = mat2cell(zeros(numbPairsTotal,1),numbPairsAll);
 
-% loop through for every training/learning sample
-for tt=1:numbConfig
-    indexConfigTemp=indexConfig(tt);
-    % retrieve x/y coordinates of all transmitter-receiver pairs
-    xxTX=ppStructConfig(indexConfigTemp).xxTX;
-    yyTX=ppStructConfig(indexConfigTemp).yyTX;
-    xxRX=ppStructConfig(indexConfigTemp).xxRX;
-    yyRX=ppStructConfig(indexConfigTemp).yyRX;
+% loop through for every training / learning sample
+for tt = 1:numbConfig
+    indexConfigTemp = indexConfig(tt);
+    % retrieve x / y coordinates of all transmitter-receiver pairs
+    xxTX = ppStructConfig(indexConfigTemp).xxTX;
+    yyTX = ppStructConfig(indexConfigTemp).yyTX;
+    xxRX = ppStructConfig(indexConfigTemp).xxRX;
+    yyRX = ppStructConfig(indexConfigTemp).yyRX;
 
     % % create L matrix
-    L=funPairsL(xxTX,yyTX,xxRX,yyRX,...
+    L = funPairsL(xxTX,yyTX,xxRX,yyRX,...
         S,theta,numbFeature);
 
     % calculate coverage probabilities for all transmitter-receiver pairs
@@ -92,15 +92,15 @@ for tt=1:numbConfig
     probCovAll{tt}=probCovTemp; % coverage probability
     probAccAll{tt}=probAccTemp; % access probability
 
-    rateTXRX=probCovTemp; % use coverage probability as rate
+    rateTXRX = probCovTemp; % use coverage probability as rate
 
     % weight for "good" subsets; see funU definition
-    weightConfig=1;
+    weightConfig = 1;
     % calculate mean of fairness of rates
-    fairMeanAll(tt)=mean(funFair(rateTXRX)*weightConfig);
+    fairMeanAll(tt)=mean(funFair(rateTXRX) * weightConfig);
 end
 
-fairMean=mean(fairMeanAll); % average fairness across all training sets
+fairMean = mean(fairMeanAll); % average fairness across all training sets
 
 % check average fairness
 if isinf(fairMean)

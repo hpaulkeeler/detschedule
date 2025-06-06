@@ -1,4 +1,4 @@
-% function KPalmReduced=funPalmK(K,indexPalm)
+% function KPalmReduced = funPalmK(K,indexPalm)
 % This function calculates the K matrix for a Palm distribution
 % conditioned on points existing in the statespace indexed by
 % indexPalm. The method is based on the result that appears
@@ -20,9 +20,9 @@
 %
 % OUTPUTS:
 % KPalmReduced= The (reduced) Palm version of the K matrix, which is a 
-% square matrix with dimension of size(K,1)-1.
+% square matrix with dimension of size(K,1) - 1.
 %
-% KPalm= The (non-reduced) Palm version of the K matrix, which is a square
+% KPalm= The (non - reduced) Palm version of the K matrix, which is a square
 % matrix with dimension of size(K,1).
 %
 % Author: H. Paul Keeler, 2020.
@@ -30,7 +30,7 @@
 % References:
 % [1] Blaszczyszyn and Keeler, "Determinantal thinning of point processes
 % with network learning applications", 2018.
-% [2] Borodin and Rains, "Eynard-Mehta theorem, Schur process, and their
+% [2] Borodin and Rains, "Eynard - Mehta theorem, Schur process, and their
 % Pfaffian analogs", 2005
 % [3] Shirai and Takahashi, "Random point fields associated with certain
 % Fredholm determinants I -- fermion, poisson and boson point", 2003.
@@ -39,32 +39,32 @@
 %
 % %% TEMP: Testing
 % clearvars; close all; clc
-% B=[9, 2, 1; 3, 8,2; 3, 1,7]
-% L=B'*B;
-% K=funLtoK(L)
+% B = [9, 2, 1; 3, 8,2; 3, 1,7]
+% L = B'*B;
+% K = funLtoK(L)
 %
-% % K=[1, 2, 3,4; 5,6,7,8; 9, 10,11,12;13, 14,15,16];
+% % K = [1, 2, 3,4; 5,6,7,8; 9, 10,11,12;13, 14,15,16];
 %
-% indexPalm=[1,2];
+% indexPalm = [1,2];
 
 function [KPalmReduced,KPalm]=funPalmK(K,indexPalm)
 
-indexPalm=indexPalm(:);
+indexPalm = indexPalm(:);
 
-KPalmReduced=funPalmReducedK(K,indexPalm); % reduced Palm kernel
-KPalm=funPalmNonreducedK(K,indexPalm,KPalmReduced); % non-reduced Palm kernel
+KPalmReduced = funPalmReducedK(K,indexPalm); % reduced Palm kernel
+KPalm = funPalmNonreducedK(K,indexPalm,KPalmReduced); % non - reduced Palm kernel
 
 % create reduced version of Palm kernel
-    function KPalmReduced=funPalmReducedK(K,indexPalm)
+    function KPalmReduced = funPalmReducedK(K,indexPalm)
         
-        sizeK=size(K,1); % number of rows/columns of K matrix
+        sizeK = size(K,1); % number of rows / columns of K matrix
         
         if max(indexPalm)>sizeK
             error('The index is too large.');
         end
         
-        % create Boolean array of remaining points/locations
-        booleRemain=true(1,sizeK);
+        % create Boolean array of remaining points / locations
+        booleRemain = true(1,sizeK);
         booleRemain(indexPalm)=false;
         
         if length(indexPalm)==1
@@ -72,33 +72,33 @@ KPalm=funPalmNonreducedK(K,indexPalm,KPalmReduced); % non-reduced Palm kernel
             boolePalm=~booleRemain;
             
             % create kernel for a reduced Palm distribution (one point)
-            KPalmReduced=K(booleRemain,booleRemain)...
-                -K(booleRemain,boolePalm).*K(boolePalm,booleRemain)/K(boolePalm,boolePalm);
+            KPalmReduced = K(booleRemain,booleRemain)...
+                -K(booleRemain,boolePalm).*K(boolePalm,booleRemain) / K(boolePalm,boolePalm);
             
         elseif length(indexPalm)>1
-            indexPalm=sort(indexPalm); % make sure index is sorted
+            indexPalm = sort(indexPalm); % make sure index is sorted
             
             % call function recursively until a single point remains
-            KTemp=funPalmReducedK(K,indexPalm(1)); % past the first element
+            KTemp = funPalmReducedK(K,indexPalm(1)); % past the first element
             
             % decrease remaining indices by one
-            indexPalmTemp=indexPalm(2:end)-1;
-            KPalmReduced=funPalmReducedK(KTemp,indexPalmTemp);
+            indexPalmTemp = indexPalm(2:end) - 1;
+            KPalmReduced = funPalmReducedK(KTemp,indexPalmTemp);
         else
             error('The index is not a valid value.');
         end
     end
 
-% create non-reduced version of Palm kernel
+% create non - reduced version of Palm kernel
     function KPalm= funPalmNonreducedK(K,indexPalm,KPalmReduced)
-        sizeK=size(K,1); % number of rows/columns of K matrix
+        sizeK = size(K,1); % number of rows / columns of K matrix
         
-        % create Boolean array of remaining points/locations
-        booleRemain=true(1,sizeK);
+        % create Boolean array of remaining points / locations
+        booleRemain = true(1,sizeK);
         booleRemain(indexPalm)=false;
         
-        % create (non-reduced) Palm kernel
-        KPalm=eye(sizeK);
+        % create (non - reduced) Palm kernel
+        KPalm = eye(sizeK);
         KPalm(booleRemain,booleRemain)=KPalmReduced;
     end
 

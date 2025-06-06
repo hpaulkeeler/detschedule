@@ -1,16 +1,16 @@
-% K=funLtoK(L)
+% K = funLtoK(L)
 %
 % The function funLtoK(L) converts a kernel L matrix into a (normalized)
-% kernel K matrix. The L matrix has to be semi-positive definite.
+% kernel K matrix. The L matrix has to be semi - positive definite.
 %
-% INPUTS: L is a semi-positive matrix L with positive eigenvalues.
+% INPUTS: L is a semi - positive matrix L with positive eigenvalues.
 %
-% OUTPUT: L is a semi-positive matrix L with eigenvalues on the unit interval.
+% OUTPUT: L is a semi - positive matrix L with eigenvalues on the unit interval.
 %
 % EXAMPLE:
-% B=[3, 2, 1; 4, 5,6; 9, 8,7];
-% L=B'*B;
-% K=funLtoK(L)
+% B = [3, 2, 1; 4, 5,6; 9, 8,7];
+% L = B'*B;
+% K = funLtoK(L)
 %   K =
 %
 %     0.7602    0.3348   -0.0906
@@ -36,15 +36,15 @@
 %
 % Author: H. Paul Keeler, 2025.
 
-function K=funLtoK(L)
+function K = funLtoK(L)
 % METHOD 1 -- using eigendecomposition.
 % This method doesn't need to calcualte the inverse and seems to be more stable.
 [eigenVectLK,eigenValL]=eig(L); % eigen decomposition
 eigenValL=(diag(eigenValL)); % eigenvalues of L as vector
-eigenValK = eigenValL./(1+eigenValL); % eigenvalues of K
-eigenValK=diag(eigenValK); %% eigenvalues of L as diagonal matrix
-K=eigenVectLK*eigenValK*(eigenVectLK'); % recombine from eigen components
-K=real(K); % make sure all values are real
+eigenValK = eigenValL./(1 + eigenValL); % eigenvalues of K
+eigenValK = diag(eigenValK); %% eigenvalues of L as diagonal matrix
+K = eigenVectLK * eigenValK * (eigenVectLK'); % recombine from eigen components
+K = real(K); % make sure all values are real
 
 end
 

@@ -1,4 +1,4 @@
-% S=funS(xx,yy,choiceKernel,paramKernel)
+% S = funS(xx,yy,choiceKernel,paramKernel)
 %
 % This code generates a similarity matrix S based on Cartesian
 % coordinates xx and yy.
@@ -43,57 +43,57 @@
 %
 % Author: H. Paul Keeler, 2025.
 
-function S=funS(xx,yy,choiceKernel,paramKernel)
-% xx/yy need to be column vectors
-xx=xx(:);
-yy=yy(:);
-sizeS=length(xx); % number of columns/rows
+function S = funS(xx,yy,choiceKernel,paramKernel)
+% xx / yy need to be column vectors
+xx = xx(:);
+yy = yy(:);
+sizeS = length(xx); % number of columns / rows
 
 % retrieve kernel parameters
-sigma=paramKernel(1);
-alpha=paramKernel(end); % if there is a second parameter
+sigma = paramKernel(1);
+alpha = paramKernel(end); % if there is a second parameter
 
 
-distBetween=pdist([xx,yy]);% inter-point distances
-distBetweenMean=mean(distBetween);% average inter-point distance
-sigma=sigma*distBetweenMean; % rescale sigma
+distBetween = pdist([xx,yy]);% inter - point distances
+distBetweenMean = mean(distBetween);% average inter - point distance
+sigma = sigma * distBetweenMean; % rescale sigma
 
 %%% NOTE:
 % As sigma approaches zero, S approaches the identity matrix
 % As sigma approaches infinity, S approaches a matrix of ones, which has a
-% zero determinant (meaning its ill-conditioned in terms of inverses)
+% zero determinant (meaning its ill - conditioned in terms of inverses)
 
 %%% START - Create similarity matrix S - START%%%
 if sigma~=0
-    % all squared distances of x/y difference pairs
-    xxDiff=bsxfun(@minus,xx,xx'); 
-    yyDiff=bsxfun(@minus,yy,yy');
-    rrDiffSquared=(xxDiff.^2+yyDiff.^2);
+    % all squared distances of x / y difference pairs
+    xxDiff = bsxfun(@minus,xx,xx'); 
+    yyDiff = bsxfun(@minus,yy,yy');
+    rrDiffSquared=(xxDiff.^2 + yyDiff.^2);
 
-    if choiceKernel==1
+    if choiceKernel == 1
         %% Gaussian kernel
         % See the paper by Lavancier, Moller and Rubak (2015)
-        S=exp(-(rrDiffSquared)/sigma^2);
-    elseif choiceKernel==2
+        S = exp(-(rrDiffSquared) / sigma^2);
+    elseif choiceKernel == 2
         %% Cauchy kernel
         % See the paper by Lavancier, Moller and Rubak (2015)
-        S=1./(1+rrDiffSquared/sigma^2).^(alpha+1/2);
-    elseif choiceKernel==3
+        S = 1./(1 + rrDiffSquared / sigma^2).^(alpha + 1/2);
+    elseif choiceKernel == 3
         %% Bessel kernel
         % See the Supplementary Material for the paper by  Biscio and
         % Lavancier (2016), page 2007. Kernel CI, where sigma has been
         % introduced as a scale parameter, similar to the Gaussian and
         % Cauchy cases.
-        rrDiff=sqrt(rrDiffSquared);
-        rrDiff(1:1+size(rrDiff,1):end)=1; % prevent zero division
+        rrDiff = sqrt(rrDiffSquared);
+        rrDiff(1:1 + size(rrDiff,1):end)=1; % prevent zero division
         % Bessel (simplified) kernel
-        S=besselj(1,2*sqrt(pi)*rrDiff/sigma)./(sqrt(pi)*rrDiff/sigma);
+        S = besselj(1,2 * sqrt(pi) * rrDiff / sigma)./(sqrt(pi) * rrDiff / sigma);
         % need to rescale to ensure that diagonal entries are ones.
-        S(1:1+size(S,1):end)=1; % set to correct value
+        S(1:1 + size(S,1):end)=1; % set to correct value
     end
 else
     % use identity matrix, which is the Aloha model
-    S=eye(sizeS);
+    S = eye(sizeS);
 end
 %%% END - Create similarity matrix S - END%%%
 end

@@ -1,0 +1,193 @@
+# Git ignore template for scientific article repository
+# LaTeX + MATLAB + Python
+
+# ============================================
+# LaTeX Build Artifacts
+# ============================================
+*.aux
+*.log
+*.out
+*.toc
+*.lot
+*.lof
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.nav
+*.snm
+*.vrb
+*.dvi
+*.ps
+*.pdf_tex
+*.backup
+*-blx.bib
+
+# LaTeX intermediate files
+*.idx
+*.ilg
+*.ind
+*.ist
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.lol
+*.xdy
+
+# Biber cache
+biber.cache/
+
+# ============================================
+# MATLAB
+# ============================================
+*.asv
+*.m~
+*.mex*
+*.autosave
+slprj/
+*.slxc
+*.mlappinstall
+*.mltbx
+
+# MATLAB data files (may want to keep small ones)
+# Uncomment if you don't want to track any MATLAB data:
+# *.mat
+
+# ============================================
+# Python
+# ============================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Python cache
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ============================================
+# Data Files
+# ============================================
+# Large data files - adjust based on your needs
+*.csv
+*.tsv
+*.dat
+*.data
+*.h5
+*.hdf5
+*.nc
+*.zarr
+
+# Keep small example data (uncomment if needed)
+# !**/examples/*.csv
+# !**/test_data/*.csv
+
+# ============================================
+# Figures (Intermediate Formats)
+# ============================================
+# Keep final PDFs but ignore intermediate formats
+#*.eps
+#*.png
+#*.jpg
+#*.jpeg
+#*.tif
+#*.tiff
+#*.svg
+
+# If you want to keep specific figure directories, use:
+# !shared/figures/generated/*.pdf
+# !article1/figures/*.pdf
+
+# ============================================
+# Operating System Files
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# ============================================
+# IDE and Editor Files
+# ============================================
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# MATLAB IDE
+*.prj
+
+# ============================================
+# Temporary Files
+# ============================================
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# ============================================
+# Logs and Databases
+# ============================================
+*.log
+*.sql
+*.sqlite
+*.db
+
+# ============================================
+# Sensitive Information
+# ============================================
+# API keys and credentials
+secrets.json
+.env
+config_private.py
+credentials.txt
+
+# ============================================
+# Custom Rules
+# ============================================
+# Add your project-specific ignores below:

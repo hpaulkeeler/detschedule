@@ -89,7 +89,7 @@ def funFairMeanDet(ppStructConfig,indexConfig,thresholdSINR,constNoise,muFading,
         xxTX = ppStructConfig[indexConfigTemp].xxTX;
         yyTX = ppStructConfig[indexConfigTemp].yyTX;
         xxRX = ppStructConfig[indexConfigTemp].xxRX;
-        yyRX = ppStructConfig[indexConfigTemp].yyTX;
+        yyRX = ppStructConfig[indexConfigTemp].yyRX;
 
         # create L matrix
         LTemp,_ = funPairsL(xxTX,yyTX,xxRX,yyRX,S,theta,numbFeature);
